@@ -1,0 +1,38 @@
+server:
+  error:
+    include-stacktrace: never  # Nunca expõe stacktrace nas respostas de erro da API (segurança/boas práticas em produção)
+spring:
+  application:
+    name: Order Service
+  datasource:
+    # URL de conexão com o MySQL:
+    # - useSSL=false -> desativa SSL (comum em ambiente local/dev)
+    # - createDatabaseIfNotExist=true -> cria o banco "db_order_service" automaticamente se não existir
+    # - allowPublicKeyRetrieval=true -> necessário em algumas versões do MySQL 8 para autenticação
+    url: jdbc:mysql://localhost:3306/db_order_service?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
+    username: root     # Usuário do banco, lido de variável de ambiente (não fica exposto no código)
+    password: root    # Senha do banco, também via variável de ambiente
+
+  jpa:
+    hibernate:
+      ddl-auto: update   # Hibernate atualiza o schema automaticamente com base nas entidades (cria/altera tabelas)
+      # Obs: "update" é ok para dev, mas arriscado em produção (usar Flyway/Liquibase é mais seguro)
+    show-sql: true      # Mostra no console os comandos SQL gerados pelo Hibernate (útil para debug)
+
+
+# Configurações customizadas da aplicação, usadas para nomear exchanges, filas e routing keys do RabbitMQ.
+# Esses valores são injetados via @Value ou @ConfigurationProperties nas classes de configuração do RabbitMQ.
+broker:
+  queue:
+    direct: orderService.direct.queue   # Fila ligada à exchange direct
+  exchange:
+    direct: direct.exchange      # Nome da exchange do tipo "direct" (roteamento exato por routing key)
+  routingkey:
+    direct: orderService.direct  # Routing key usada para rotear mensagens até a fila "direct"
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug     # Loga no nível DEBUG os comandos SQL executados pelo Hibernate
+        type: trace    # Loga no nível TRACE os valores dos parâmetros vinculados (bind values) nesses SQLs

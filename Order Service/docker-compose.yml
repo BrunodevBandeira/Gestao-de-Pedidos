@@ -1,0 +1,25 @@
+version: "3.1"
+services:
+  db:
+    image: mysql
+    container_name: mysql_order_service
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - order_data:/var/lib/mysql
+
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: rabbitMQ_docker
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - rabbitmq_order_service:/var/lib/rabbitmq
+
+
+volumes:
+  order_data:
+  rabbitmq_order_service:

@@ -1,0 +1,27 @@
+server:
+  error:
+    include-stacktrace: never
+spring:
+  application:
+    name: Product Service
+    datasource:
+      url: jdbc:mysql://localhost:3306/db_product_service?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
+      username: root
+      password: root
+    jpa:
+      hibernate:
+        ddl-auto: update
+        show-sql: true
+broker:
+  queue:
+    direct: productService.direct.queue
+  exchange:
+    direct: productService.direct.exchange
+  routingKey:
+    direct: productService.direct.routingKey
+logging:
+  level:
+    org:
+      hibernate:
+        sql: debug
+        type: trace
