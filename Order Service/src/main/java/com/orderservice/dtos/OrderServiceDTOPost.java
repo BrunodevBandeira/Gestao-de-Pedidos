@@ -10,5 +10,6 @@ import java.time.LocalDateTime;
 public record OrderServiceDTOPost(
         @NotBlank String status,
         @NotNull @Positive Double valueTotal,
-        LocalDateTime date
+        LocalDateTime date   
+        
 ){}
