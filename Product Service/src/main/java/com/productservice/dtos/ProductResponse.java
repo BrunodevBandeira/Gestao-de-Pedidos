@@ -1,4 +1,13 @@
 package com.productservice.dtos;
 
-public class ProductResponse {
-}
+import lombok.Builder;
+
+import java.util.UUID;
+
+@Builder
+public record ProductResponse(
+        UUID productId,
+        String name,
+        double price,
+        int stockQuantity
+) {}

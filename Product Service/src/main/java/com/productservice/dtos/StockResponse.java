@@ -1,4 +1,6 @@
 package com.productservice.dtos;
 
-public class StockResponse {
+public record StockResponse(
+        boolean inStock
+) {
 }
