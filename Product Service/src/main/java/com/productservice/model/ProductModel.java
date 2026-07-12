@@ -13,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Product implements Serializable {
+public class ProductModel implements Serializable  {
 
     private static final long serialVersionUID = 1L;
 
@@ -24,6 +24,5 @@ public class Product implements Serializable {
     private String name;
     private double price;
     private int stockQuantity;
-
 
 }
