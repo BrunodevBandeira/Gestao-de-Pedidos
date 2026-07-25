@@ -1,6 +1,6 @@
 package com.orderservice.controller;
 
-
+import com.orderservice.dtos.OrderServiceDTOPost;
 import com.orderservice.dtos.OrderServiceDTOPut;
 import com.orderservice.repository.OrderServiceRepository;
 import com.orderservice.service.OrderServiceImpl;
@@ -34,11 +34,10 @@ public class OrderServiceController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderServiceDTOPut> createOrder(@Valid @RequestBody OrderServiceDTOPut orderServiceDTO) {
+    public ResponseEntity<OrderServiceDTOPut> createOrder(@Valid @RequestBody OrderServiceDTOPost orderServiceDTO) {
         OrderServiceDTOPut created = orderService.createOrder(orderServiceDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<OrderServiceDTOPut> updateOrder(@PathVariable UUID id, @Valid @RequestBody OrderServiceDTOPut orderServiceDTO) {

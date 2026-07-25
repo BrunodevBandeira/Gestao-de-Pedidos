@@ -18,7 +18,6 @@ public class ProductModel implements Serializable  {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID productId;
 
     private String name;

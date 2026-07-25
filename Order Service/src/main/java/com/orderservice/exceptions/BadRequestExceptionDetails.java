@@ -1,6 +1,5 @@
 package com.orderservice.exceptions;
 
-
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 

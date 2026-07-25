@@ -1,6 +1,5 @@
 package com.orderservice.handler;
 
-
 import com.orderservice.exceptions.BadRequestException;
 import com.orderservice.exceptions.BadRequestExceptionDetails;
 import com.orderservice.exceptions.ValidationExceptionDetails;
@@ -19,11 +18,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// Aqui tudo se conecta. Essa classe captura as exceções e monta o JSON
-@ControllerAdvice //Monitora todos os controllers do projeto
+@ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
-    // (A) captura a SUA exceção customizada
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<BadRequestExceptionDetails> handleBadRequestException (BadRequestException bre) {
         return new ResponseEntity<>(
@@ -31,13 +28,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                         .timestamp(LocalDateTime.now())
                         .status(HttpStatus.BAD_REQUEST.value())
                         .title("==> Bad Request Exception, check the documentation <==")
-                        .details(bre.getMessage())  // <- a msg que você passou no throw
+                        .details(bre.getMessage())
                         .developerMessage(bre.getClass().getName())
                         .build(),
                 HttpStatus.BAD_REQUEST);
     }
 
-    // (B) captura falhas do @Valid automaticamente
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException exception,
@@ -60,6 +56,5 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 HttpStatus.BAD_REQUEST);
 
     }
-
 
 }

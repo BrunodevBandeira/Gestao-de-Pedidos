@@ -1,0 +1,40 @@
+server:
+  port: 8083
+  error:
+    include-stacktrace: never
+spring:
+  application:
+    name: Payment Service
+  datasource:
+    url: jdbc:mysql://localhost:3306/db_payment?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+broker:
+  exchange: orders.exchange
+  routingkey:
+    stockReserved: stock.reserved
+    paymentApproved: payment.approved
+    paymentFailed: payment.failed
+  queue:
+    payment: payment.queue
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+        type: trace

@@ -1,5 +1,6 @@
 package com.orderservice.service;
 
+import com.orderservice.dtos.OrderServiceDTOPost;
 import com.orderservice.dtos.OrderServiceDTOPut;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +12,7 @@ public interface OrderServiceService {
     OrderServiceDTOPut getOrderById(UUID id);
     Page<OrderServiceDTOPut> getAllOrder(Pageable pageable);
 
-    OrderServiceDTOPut createOrder(OrderServiceDTOPut orderServiceDTO);
+    OrderServiceDTOPut createOrder(OrderServiceDTOPost orderServiceDTO);
 
     OrderServiceDTOPut updateOrder(UUID id, OrderServiceDTOPut orderServiceDTO);
 

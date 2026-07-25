@@ -12,6 +12,9 @@ import java.util.UUID;
 @Builder
 public record OrderServiceDTOPut(
           UUID orderID,
+          @NotNull UUID productId,
+          @NotNull @Positive Integer quantity,
+          String productName,
           @NotBlank String status,
           @NotNull @Positive Double valueTotal,
           LocalDateTime date

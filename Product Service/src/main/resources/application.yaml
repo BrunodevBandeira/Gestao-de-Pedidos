@@ -1,24 +1,33 @@
 server:
+  port: 8082
   error:
     include-stacktrace: never
 spring:
   application:
     name: Product Service
-    datasource:
-      url: jdbc:mysql://localhost:3306/db_product_service?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
-      username: root
-      password: root
-    jpa:
-      hibernate:
-        ddl-auto: update
-        show-sql: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/db_product_service?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
 broker:
+  exchange: orders.exchange
+  routingkey:
+    orderCreated: order.created
+    stockReserved: stock.reserved
   queue:
-    direct: productService.direct.queue
-  exchange:
-    direct: productService.direct.exchange
-  routingKey:
-    direct: productService.direct.routingKey
+    orderStatus: order.status.queue
+    stockReservation: stock.reservation.queue
+
 logging:
   level:
     org:

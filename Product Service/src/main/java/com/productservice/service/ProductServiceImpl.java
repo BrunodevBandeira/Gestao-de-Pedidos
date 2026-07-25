@@ -41,11 +41,11 @@ public class ProductServiceImpl implements ProductService{
         return new StockResponse(product.getStockQuantity() > 0);
     }
 
-
     @Override
     @Transactional
     public ProductResponse createProduct(ProductRequest productRequest) {
         ProductModel productModel = productMapper.toModel(productRequest);
+        productModel.setProductId(UUID.randomUUID());
         ProductModel saved = productRepository.save(productModel);
         return productMapper.toDTO(saved);
     }
@@ -70,6 +70,21 @@ public class ProductServiceImpl implements ProductService{
         productRepository.delete(findProductById(id));
     }
 
+    @Override
+    @Transactional
+    public ReservationResult reserveStock(UUID productId, int quantity) {
+        return productRepository.findById(productId)
+                .map(product -> {
+                    double total = product.getPrice() * quantity;
+                    boolean enough = product.getStockQuantity() >= quantity;
+                    if (enough) {
+                        product.setStockQuantity(product.getStockQuantity() - quantity);
+                        productRepository.save(product);
+                    }
+                    return new ReservationResult(enough, product.getName(), total);
+                })
+                .orElse(new ReservationResult(false, null, null));
+    }
 
     private ProductModel findProductById(UUID id) {
         return productRepository.findById(id).orElseThrow(() -> new BadRequestException("Product not found: " + id));

@@ -1,0 +1,12 @@
+# IDE / Ferramentas
+.idea/
+*.iml
+.postman/
+postman/
+
+# Build Maven
+target/
+
+# Logs / OS
+*.log
+.DS_Store

@@ -12,13 +12,12 @@ services:
 
   rabbitmq:
     image: rabbitmq:3.13-management
-    container_name: rabbitMQ_docker
+    container_name: rabbitMQ_docker_os
     ports:
       - "15672:15672"
       - "5672:5672"
     volumes:
       - rabbitmq_order_service:/var/lib/rabbitmq
-
 
 volumes:
   order_data:

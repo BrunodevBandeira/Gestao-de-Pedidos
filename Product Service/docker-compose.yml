@@ -10,7 +10,6 @@ services:
     volumes:
      - product_data:/var/lib/mysql
 
-
   rabbitmq:
     image: rabbitmq:3.13-management
     container_name: rabbitMQ_product

@@ -1,7 +1,6 @@
 package com.orderservice.producer;
 
-import com.orderservice.controller.OrderServiceController;
-import com.orderservice.dtos.OrderServiceDTOPut;
+import com.orderservice.event.OrderCreatedEvent;
 import com.orderservice.model.OrderServiceModel;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,32 +9,25 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrderServiceProducer {
 
-    final RabbitTemplate rabbitTemplate;
+    private final RabbitTemplate rabbitTemplate;
 
     public OrderServiceProducer(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    @Value(value = "${broker.queue.direct}")
-    private String directQueue;
+    @Value("${broker.exchange}")
+    private String exchange;
 
-    @Value(value = "${broker.exchange.direct}")
-    private String directExchange;
+    @Value("${broker.routingkey.orderCreated}")
+    private String orderCreatedKey;
 
-    @Value(value = "${broker.routingkey.direct}")
-    private String directRoutingkey;
+    public void publishOrderCreated(OrderServiceModel order) {
+        OrderCreatedEvent event = new OrderCreatedEvent(
+                order.getOrderID(),
+                order.getProductId(),
+                order.getQuantity()
+        );
 
-    public void directPublishMsg(OrderServiceModel orderServiceModel) {
-        OrderServiceDTOPut orderServiceDTOPut = OrderServiceDTOPut.builder()
-                .orderID(orderServiceModel.getOrderID())
-                .status(orderServiceModel.getStatus())
-                .valueTotal(orderServiceModel.getValueTotal())
-                .date(orderServiceModel.getDate())
-                .build();
-
-        rabbitTemplate.convertAndSend(directExchange, directRoutingkey, orderServiceDTOPut);
-
+        rabbitTemplate.convertAndSend(exchange, orderCreatedKey, event);
     }
-
-
 }

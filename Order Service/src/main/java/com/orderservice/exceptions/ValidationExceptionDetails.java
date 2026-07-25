@@ -6,6 +6,6 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @SuperBuilder
 public class ValidationExceptionDetails extends ExceptionDetails {
-    private String fields;         // quais campos falharam
-    private String fieldsMessage;  // as mensagens de cada um
+    private String fields;
+    private String fieldsMessage;
 }

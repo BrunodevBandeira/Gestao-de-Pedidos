@@ -10,29 +10,23 @@ import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 
 import java.util.Optional;
 
-@DataJpaTest // ← sobe SÓ a camada de persistência + banco H2 em
+@DataJpaTest
 @DisplayName("Testes do repositório de Order Service")
 class OrderServiceRepositoryTest {
 
     @Autowired
-    private OrderServiceRepository repository; // ← injeta o repositório de verdade (não é mock!)
+    private OrderServiceRepository repository;
 
-
-
-    @Test // @Test roda numa transação que dá ROLLBACK no fim  → um teste não "suja" o banco pro outro
+    @Test
     @DisplayName("save persiste um pedido e gera o id")
     void save_PersistsOrderService_WhenSuccessful() {
-        // Arrange: um pedido ainda SEM id
         OrderServiceModel toBeSaved = OrderServiceCreator.createOrderServiceToBeSaved();
 
-        // Act: salvar E mandar o INSERT pro banco na hora (flush),
-        // pra o @CreationTimestamp gerar a data antes das asserções
         OrderServiceModel saved = repository.saveAndFlush(toBeSaved);
 
-        // Assert
         Assertions.assertThat(saved).isNotNull();
-        Assertions.assertThat(saved.getOrderID()).isNotNull();   // o banco gerou o UUID
-        Assertions.assertThat(saved.getDate()).isNotNull();      // @CreationTimestamp preencheu
+        Assertions.assertThat(saved.getOrderID()).isNotNull();
+        Assertions.assertThat(saved.getDate()).isNotNull();
         Assertions.assertThat(saved.getStatus()).isEqualTo(toBeSaved.getStatus());
     }
 
@@ -46,7 +40,7 @@ class OrderServiceRepositoryTest {
         OrderServiceModel updated = repository.save(saved);
 
         Assertions.assertThat(updated).isNotNull();
-        Assertions.assertThat(updated.getOrderID()).isEqualTo(saved.getOrderID()); // mesmo id
+        Assertions.assertThat(updated.getOrderID()).isEqualTo(saved.getOrderID());
         Assertions.assertThat(updated.getStatus()).isEqualTo("Entregue");
         Assertions.assertThat(updated.getValueTotal()).isEqualTo(999.99);
     }
