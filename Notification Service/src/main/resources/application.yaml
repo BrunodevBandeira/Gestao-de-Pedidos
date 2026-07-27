@@ -1,0 +1,34 @@
+server:
+  port: 8084
+  error:
+    include-stacktrace: never
+spring:
+  application:
+    name: Notification Service
+  datasource:
+    url: jdbc:mysql://localbost:3306/db_notification?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+broker:
+  exchange: orders.exchange
+  routingkey:
+    stockReserved: stock.reserved
+    paymentApproved: payment.approved
+    paymentFailed: payment.failed
+  queue:
+    payment: payment.queue                
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+        type: trace

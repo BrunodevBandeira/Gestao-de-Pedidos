@@ -1,0 +1,22 @@
+version: "3.1"
+services:
+  db:
+    image: mysql
+    container_name: mysql_notification
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - notification_data:/var/lib/mysql
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: rabbitmq_notification
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - rabbitmq_notification_service:/var/lib/rabbitmq
+volumes:
+  notification_data:
+  rabbitmq_notification_service:
